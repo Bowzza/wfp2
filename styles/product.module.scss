@@ -1,0 +1,112 @@
+.iconAbsolute {
+    transition: .3s;
+}
+
+.iconAbsolute:hover {
+    cursor: pointer;
+    transform: scale(1.1);
+}
+
+.card {
+    transition: .3s;
+    border: none;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    overflow: hidden;
+    position: relative;
+}
+
+.cardImgTop {
+    transition: .3s;
+}
+
+.card:hover  {
+    cursor: pointer;
+    .cardImgTop {
+        transform: scale(1.08);
+    }
+}
+
+.crop {
+    overflow:hidden;
+    line-height: 30px;
+    height: 30px;
+}
+
+.shopImg {
+    width: 100px;
+}
+
+.linkSection {
+    width: 100%;
+    /* // z-index: 5; */
+}
+
+.darkCard {
+    background-color: #262626;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.bell {
+    font-size: 28px; 
+    bottom: 5px; 
+    right: 5px;
+    transition: .3s;
+}
+
+.bell:hover {
+    transform: scale(1.2);
+}
+
+.card-title {
+    font-weight: 400 !important;
+}
+
+.product-img {
+    max-height: 200px;
+}
+
+.rectangle {
+    height: 50px;
+    width: 350px;
+    background-color: #32C161;
+    position: absolute;
+    left: -385px;
+    bottom: -380px;
+    transform: rotate(45deg);
+    animation: animateInRectangle .2s forwards;
+}
+
+.bi {
+    font-size: 25px;
+}
+
+@keyframes animateInRectangle {
+    from {
+        left: -385px;
+        bottom: -380px;
+    }
+    to {
+        left: -85px;
+        bottom: -80px;
+    }
+}
+
+@keyframes addProductToCart {
+    from {
+        top: 0;
+        left: 0;
+    }
+    to {
+        top: 30px;
+        left: 900px;
+        transform: scale(0.2);
+   } 
+}
+
+@media only screen and (max-width: 600px) {
+    .card:hover {
+        transform: none;
+    }
+    
+}
