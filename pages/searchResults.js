@@ -67,9 +67,10 @@ const searchResults = ({ searchResults }) => {
 }
 
 export const getServerSideProps = async (context) => {
-    if(!context.query.searchQuery) return;
+    let searchResults = [];
+    if(!context.query.searchQuery) return { props: { searchResults } };
     const res = await fetch('http://localhost:3001/api/search/'+context.query.searchQuery);
-    const searchResults = await res.json();
+    searchResults = await res.json();
     
     return {
      props: {
