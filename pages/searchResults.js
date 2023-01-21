@@ -12,6 +12,9 @@ const searchResults = ({ query }) => {
     const[searchArray, setSearchArray] = useState(null);
     const[loadingProducts, setLoadingProducts] = useState(false);
 
+    const[asc, setAsc] = useState(false);
+    const[desc, setDesc] = useState(false);
+
 
     useEffect(() => {
         if(query.searchQuery !== undefined) {
@@ -64,11 +67,35 @@ const searchResults = ({ query }) => {
         console.log('shpock')
         
     }
-
-    function sortProductsByPrice () {
-        console.log('sort')
-
+    
+    function removeFilter() {
+        console.log('filter')
     }
+
+    function sortByPriceAsc(arr) {
+        arr.sort((a, b) => {
+            return a.price - b.price;
+        });
+      }
+    
+    function sortByPriceDesc(arr) {
+        arr.sort((a, b) => {
+            return b.price - a.price;
+        });
+    }
+
+    function sortByPrice(e) {
+        console.log('sort '+e.target.value);
+        if(e.target.value === 'asc') {
+          setDesc(false);
+          setAsc(true);
+          sortByPriceAsc(searchArray);
+          return;
+        }
+        setDesc(true);
+        setAsc(false);
+        sortByPriceDesc(searchArray);
+      }
 
   return (
 
@@ -82,7 +109,8 @@ const searchResults = ({ query }) => {
             }
         <div className={`mt-5 d-flex justify-content-center ${styles.searchContainerWidth}`} id="search-container">
             <div className={`position-fixed d-flex justify-content-center align-items-center ${styles.filterSize}`} id="filter" >
-                <Filter filterEbay={filterByEbay} filterShpock={filterByShpock} sortProductByPrice={sortProductsByPrice}/>
+                <Filter className={styles.zIndex} filterEbay={filterByEbay} filterShpock={filterByShpock} 
+                sortProductByPrice={sortByPrice} removeFilter={removeFilter}/>
             </div>
             {searchArray ? 
                 <div className="d-flex flex-column justify-content-center align-items-center">

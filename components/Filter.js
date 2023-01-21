@@ -24,11 +24,11 @@ const Filter = (props) => {
                     Shpock Produkte
                 </label>
             </div>
-            <select onChange={props.sortProductsByPrice} className={`form-select select-width me-2 ${styles.selectWidth}`} aria-label="Default select example">
+            <select onChange={props.sortProductByPrice} className={`form-select select-width me-2 ${styles.selectWidth}`} aria-label="Default select example">
                 <option value="asc" >Aufsteigend</option>
                 <option value="desc">Absteigend</option>
             </select>
-            <button id="removeFilterBtn" className="btn btn-primary">Filter entfernen</button>
+            <button onClick={props.removeFilter} id="removeFilterBtn" className="btn btn-primary">Filter entfernen</button>
         </div>
     )
 }

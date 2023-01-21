@@ -41,6 +41,10 @@
     width: 100%;
 }
 
+.zIndex {
+    z-index: 999;
+}
+
 .scroll-up {
     display: none;
     bottom: 12px;
