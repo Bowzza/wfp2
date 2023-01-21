@@ -2,56 +2,115 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import { useState, useEffect } from 'react'
 import Product from '../components/Product'
+import Filter from '../components/Filter'
 import styles from '../styles/searchResults.module.css'
+import SearchBar from '../components/SearchBar'
+
+const searchResults = ({ query }) => {
+
+    const router = useRouter();
+    const[searchArray, setSearchArray] = useState(null);
+    const[loadingProducts, setLoadingProducts] = useState(false);
 
 
-const searchResults = ({ searchResults }) => {
+    useEffect(() => {
+        if(query.searchQuery !== undefined) {
+            setLoadingProducts(true);
+            fetch('http://localhost:3001/api/search/'+query.searchQuery)
+            .then((res) => res.json())
+            .then((data) => {
+                setSearchArray(data);
+                setLoadingProducts(false);
+            });
+        }
+    }, [])
 
-  const router = useRouter();
-//   console.log(router.query.searchQuery)
-//   const searchTerm = router.query.searchQuery
-//   const [data, setData] = useState([])
-//   useEffect(() => {
-//     if(router.query.searchQuery) {
-//         console.log('fjiaofoafaif')
-//         fetch('http://localhost:3001/api/search/'+router.query.searchQuery)
-//         .then((res) => res.json())
-//         .then((data) => {
-//             setData(data)
-//             console.log(data)
-//         })
-//     }
-//    } ,[])
-  
+
+    async function searchEnter(e) {
+        if(e.key !== 'Enter') return;
+        setSearchArray([]);
+        setLoadingProducts(true);
+        let searchResults = [];
+        if(!e.target.value) return;
+        router.push({
+            pathname: '/searchResults',
+            query: {searchQuery: e.target.value}
+        })
+        const res = await fetch('http://localhost:3001/api/search/'+e.target.value);
+        searchResults = await res.json();
+        setSearchArray(searchResults);
+        setLoadingProducts(false);
+    }
+
+    async function searchOnClick(e) {
+        let searchResults = [];
+        if(!e.target.value) return;
+        router.push({
+            pathname: '/searchResults',
+            query: {searchQuery: e.target.value}
+        })
+        const res = await fetch('http://localhost:3001/api/search/'+e.target.value);
+        searchResults = await res.json();
+        setSearchArray(searchResults);
+        console.log(searchArray)
+    }
+
+
+    function filterByEbay() {
+        console.log('ebay')
+    }
+
+    function filterByShpock() {
+        console.log('shpock')
+        
+    }
+
+    function sortProductsByPrice () {
+        console.log('sort')
+
+    }
 
   return (
 
-    <section className='section'>
-        {/* <div class="container box sticky-top" [class.darkCard]="darkmode" style="z-index: 5;">
-            <app-searchbar (searchProduct)="search($event)"></app-searchbar>
-        </div> */}
-        <div class="mt-5 d-flex justify-content-center" id="search-container">
-            <div class="position-fixed d-flex justify-content-center align-items-center" id="filter" >
-            {/* <app-filter 
-                *ngIf="searchResults.length > 0 || alreadySearched" [asc]="asc" [desc]="desc" [darkmode]="darkmode" 
-                (filterEbay)="filterEbay()" (filterShpock)="filterShpock()" 
-                (sortByPrice)="sortByPrice($event)" (removeFilter)="removeFilter()">
-            </app-filter> */}
+    <section className={styles.section}>
+        <div className={`container ${styles.box} sticky-top`} >
+            <SearchBar searchWithEnter={searchEnter} searchWithClick={searchOnClick}/>
+        </div>
+        {loadingProducts ? 
+            <div className="spinner-border text-light" role="status"></div> 
+            :<></>
+            }
+        <div className={`mt-5 d-flex justify-content-center ${styles.searchContainerWidth}`} id="search-container">
+            <div className={`position-fixed d-flex justify-content-center align-items-center ${styles.filterSize}`} id="filter" >
+                <Filter filterEbay={filterByEbay} filterShpock={filterByShpock} sortProductByPrice={sortProductsByPrice}/>
             </div>
-            <div class="d-flex flex-column justify-content-center align-items-center">
-            <h2 class="text-center">Suchergebnisse für: {router.query.searchQuery}</h2>
-            <span  >Anzahl der Suchergebnisse: {searchResults.length}</span>
-            <button class="btn btn-primary mt-1" id="filterBtnResponisve" data-bs-toggle="modal" data-bs-target="#filterModal">Filter einstellen</button>
-            <div className={`${styles.gridProducts} mt-4`}>
-                {searchResults.map((product) => (
-                    <Product product={product}></Product>
-                ))}
-            </div>
-            <button class="btn btn-primary d-flex align-items-center gap-2 mt-4 mb-3">
-                Mehr Produkte laden
-                {/* <div *ngIf="loadingProducts" class="spinner-border text-light" role="status" style="width: 1.5rem; height: 1.5rem;"></div> */}
-            </button>
-            </div>
+            {searchArray ? 
+                <div className="d-flex flex-column justify-content-center align-items-center">
+                    <h2 className="text-center">Suchergebnisse für: {router.query.searchQuery}</h2>
+                    <span  >Anzahl der Suchergebnisse: {searchArray.length}</span>
+                    <button className="btn btn-primary mt-1" id="filterBtnResponisve" data-bs-toggle="modal" data-bs-target="#filterModal">Filter einstellen</button>
+                    {searchArray !== null ? 
+                            <div className={`${styles.gridProducts} mt-4`}>
+                            {searchArray.map((product) => (
+                                <Product product={product}></Product>
+                            ))}
+                        </div>
+                        : <></>
+                    }
+        
+                    <button className="btn btn-primary d-flex align-items-center gap-2 mt-4 mb-3">
+                        Mehr Produkte laden
+                        {loadingProducts ? 
+                            <div className="spinner-border text-light" role="status"></div>
+                            :
+                            <></>
+                    }
+
+                    </button>
+                </div>
+                : <></>
+            }
+            
         </div>
 
         {/* <section *ngIf="searchResults.length == 0 && !alreadySearched" class="container d-flex align-items-center justify-content-center">
@@ -66,18 +125,8 @@ const searchResults = ({ searchResults }) => {
   )
 }
 
-export const getServerSideProps = async (context) => {
-    let searchResults = [];
-    if(!context.query.searchQuery) return { props: { searchResults } };
-    const res = await fetch('http://localhost:3001/api/search/'+context.query.searchQuery);
-    searchResults = await res.json();
-    
-    return {
-     props: {
-        searchResults
-     }
-    }
+searchResults.getInitialProps = async ({ query }) => {
+    return { query }
 }
-
 
 export default searchResults

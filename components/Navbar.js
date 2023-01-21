@@ -1,11 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import styles from '../styles/navbar.module.css'
+import { userService } from '../services/user.service'
+import { useRouter } from 'next/router';
 
-const navbar = () => {
+
+const Navbar = () => {
   const darkMode = false;
-  const loggedIn = false;
+  const [loggedIn, setLoggedIn] = useState(false)
+  const router = useRouter();
 
+  useEffect(() => {
+    userService.returnAuthListener().subscribe((res) => {
+      setLoggedIn(res)
+    });
+  }, [])
+
+  function logout () {
+    userService.logout();
+    router.push('/login');
+  }
 
   return (
     <nav className="navbar navbar-expand-lg bg-success">
@@ -22,9 +36,10 @@ const navbar = () => {
           <li className="nav-item" id="navSearchItem">
             <Link className={`nan-link active text-light me-3 ${styles.navLink}`} href="/searchResults">Suchen</Link>
           </li>
-          <li className="nav-item" id="navSearchItem">
-            <Link className={`nan-link active text-light me-3 ${styles.navLink}`} href="/accountInfo">Accountinfo</Link>
-          </li>
+          {loggedIn ? <li className="nav-item" id="navSearchItem">
+            <Link className={`nan-link active text-light me-3 ${styles.navLink}`} href="/accountinfo">Accountinfo</Link>
+          </li> : <></>}
+
           {/* <app-cart *ngIf="isAuth" [routerLink]="['/wishlist']" class="me-4 ms-2"></app-cart> */}
           <div className={`${styles.themeMode} position-absolute`}>
             {darkMode ? <img className={styles.themeModeImg} src="darkmode.svg" alt="darkmode" /> 
@@ -37,10 +52,10 @@ const navbar = () => {
           <option value="de">Deutsch</option>
           <option value="en">Englisch</option>
         </select>
-        {loggedIn ? <button className="me-2 btn btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">Abmelden</button> 
+        {loggedIn ? <button onClick={logout} className="me-2 btn btn-light" data-bs-toggle="modal" data-bs-target="#loginModal">Abmelden</button> 
         : <div>
           <Link className="me-2 btn btn-light" href="/login">Anmelden</Link> 
-          <Link className="btn btn-light" href="/register">Registrieren</Link>
+          <Link className="btn btn-light" href="/registration">Registrieren</Link>
           </div>}
       </div>
     </div>
@@ -50,10 +65,4 @@ const navbar = () => {
   )
 }
 
-
-
-function testMe() {
-  alert('dere');
-}
-
-export default navbar
+export default Navbar

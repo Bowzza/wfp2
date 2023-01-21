@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../styles/homepage.module.css'
 import { useRouter } from 'next/router'
 
-const home = () => {
+const Home = () => {
 
     const router = useRouter()
     function search(e) {
@@ -50,4 +50,4 @@ const home = () => {
 
 
 
-export default home
+export default Home

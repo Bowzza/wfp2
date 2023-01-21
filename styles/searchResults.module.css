@@ -31,6 +31,16 @@
     background-color: rgb(231, 231, 231);
 } */
 
+.filterSize {
+    width: 25%;
+    height: 60vh;
+    left: 0px;
+}
+
+.searchContainerWidth {
+    width: 100%;
+}
+
 .scroll-up {
     display: none;
     bottom: 12px;

@@ -1,0 +1,43 @@
+.biPersonCircle {
+    font-size: 200px;
+}
+
+.darkMode {
+    color: #fff;
+}
+
+.changePasswordForm {
+    position: relative;
+    min-width: 30%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    border-radius: 10px;
+}
+
+.close {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    width: 20px;
+    height: 20px;
+    opacity: 0.3;
+  }
+  .close:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+  .close:before, .close:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 20px;
+    width: 2px;
+    background-color: #333;
+  }
+  .close:before {
+    transform: rotate(45deg);
+  }
+  .close:after {
+    transform: rotate(-45deg);
+  }

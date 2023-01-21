@@ -34,7 +34,9 @@ body {
   overflow-y: unset;
 }
 
-
+.bi-person-circle {
+  font-size: 200px;
+}
 
 .btn-primary {
   background-color: #26663b !important;
