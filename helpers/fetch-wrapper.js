@@ -9,11 +9,19 @@ export const fetchWrapper = {
     delete: _delete
 };
 
-function get(url) {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader(url)
-    };
+function get(url, token) {
+    let requestOptions;
+    if(token != null && checkIfSendingJWT()) {
+        requestOptions = {
+            method: 'GET',
+            headers: { 'auth-token': token }
+        };
+    } else {
+        requestOptions = {
+            method: 'GET',
+            headers: authHeader(url)
+        };
+    }
     return fetch(url, requestOptions).then(handleResponse);
 }
 
@@ -25,15 +33,12 @@ function post(url, body, token) {
             headers: { 'Content-Type': 'application/json', 'auth-token': token },
             body: JSON.stringify(body)
         }; 
-        console.log('token geht')
     } else {
         requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body)
         };
-        console.log('token geht ned')
-
     }
 
     return fetch(url, requestOptions).then(handleResponse);
@@ -49,11 +54,19 @@ function put(url, body) {
 }
 
 // prefixed with underscored because delete is a reserved word in javascript
-function _delete(url) {
-    const requestOptions = {
-        method: 'DELETE',
-        headers: authHeader(url)
-    };
+function _delete(url, token) {
+    let requestOptions;
+    if(token != null && checkIfSendingJWT()) {
+        requestOptions = {
+            method: 'DELETE',
+            headers: { 'auth-token' : token}
+        };
+    } else {
+        requestOptions = {
+            method: 'DELETE',
+            headers: authHeader(url)
+        };
+    }
     return fetch(url, requestOptions).then(handleResponse);
 }
 

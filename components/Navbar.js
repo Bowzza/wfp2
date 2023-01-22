@@ -39,6 +39,9 @@ const Navbar = () => {
           {loggedIn ? <li className="nav-item" id="navSearchItem">
             <Link className={`nan-link active text-light me-3 ${styles.navLink}`} href="/accountinfo">Accountinfo</Link>
           </li> : <></>}
+          {loggedIn ? <li className="nav-item" id="navSearchItem">
+            <Link className={`nan-link active text-light me-3 ${styles.navLink}`} href="/wishlist">Wunschliste</Link>
+          </li> : <></>}
 
           {/* <app-cart *ngIf="isAuth" [routerLink]="['/wishlist']" class="me-4 ms-2"></app-cart> */}
           <div className={`${styles.themeMode} position-absolute`}>

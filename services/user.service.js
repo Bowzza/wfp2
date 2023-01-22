@@ -96,7 +96,8 @@ function autoAuthUser() {
 
   function setAuthTimer(duration) {
     tokenTimer = setTimeout(() => {
-      this.logout();
+      logout();
+      location.href = 'http://localhost:3000/home';
     }, duration*1000);
   }
 
